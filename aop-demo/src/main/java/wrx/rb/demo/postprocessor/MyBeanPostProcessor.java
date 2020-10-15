@@ -16,15 +16,10 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof Man) {
             System.out.println("get man in postProcessBeforeInitialization");
-
             ((Man)bean).tmp = ", insert string in postProcessBeforeInitialization";
-
-            // 只处理bean，详细调用可以查看AbstractAutowireCapableBeanFactory里面的写法
-            // 会把返回出去的bean作为最终结果进行返回
-            return bean;
         }
-        // 如果返回null，就相当于使用原先传进来的Object bean这个参数
-        return null;
+        // 这里不能返回空，要把原来的bean返回回去，会导致部分配置失效
+        return bean;
     }
 
     @Override
@@ -32,7 +27,8 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
         if (bean instanceof Man) {
             System.out.println("get man in postProcessAfterInitialization");
         }
-        return null;
+        // 这里不能返回空，会导致部分配置失效
+        return bean;
     }
 
 
